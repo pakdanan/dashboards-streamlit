@@ -31,7 +31,7 @@ select = st.sidebar.selectbox('Vizualization type', ['Histogram', 'Pie Chart'], 
 sentiment_count = data['airline_sentiment'].value_counts()
 sentiment_count = pd.DataFrame({'Sentiment' :sentiment_count.index, 'Tweets' :sentiment_count.values})
 
-if not st.sidebar.checkbox('Hide', True):
+if not st.sidebar.checkbox('Hide', True, key='Hide1'):
     st.markdown("### Number of tweets by Sentiment")
     if select == "Histogram":
         fig = px.bar(sentiment_count, x='Sentiment', y='Tweets', color = 'Tweets', height= 500)
@@ -43,11 +43,11 @@ if not st.sidebar.checkbox('Hide', True):
 st.sidebar.subheader("When and where are the users tweeting from?")
 hour = st.sidebar.slider("Hour of day", 0, 23)
 modified_data = data[data['tweet_created'].dt.hour == hour]
-if not st.sidebar.checkbox("Close", True, key='1'):
+if not st.sidebar.checkbox("Close", True, key='Close1'):
     st.markdown("### Tweets location based on the time of the day")
     st.markdown("%i, tweets between %i:00 and %i:00" % (len(modified_data), hour, (hour+1)%24))
     st.map(modified_data)
-    if st.sidebar.checkbox("Show raw data", False):
+    if st.sidebar.checkbox("Show raw data", False, key='Show1'):
         st.write(modified_data)
 
 
@@ -63,7 +63,7 @@ if len(choice) >0:
 st.sidebar.header("Word Cloud")
 word_sentiment = st.sidebar.radio('Display word cloud for which sentiment?', ('positive', 'negative', 'neutral'))
 
-if not st.sidebar.checkbox("Close", True, key = '3'):
+if not st.sidebar.checkbox("Close", True, key = 'Close3'):
     st.header('Word cloud for %s sentiment' % (word_sentiment))
     df = data[data['airline_sentiment']==word_sentiment]
     words = ' '.join(df['text'])
